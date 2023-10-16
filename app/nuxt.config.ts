@@ -2,13 +2,6 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  auth: {
-    globalAppMiddleware: {
-      isEnabled: true,
-      allow404WithoutAuth: true,
-      addDefaultCallbackUrl: true,
-    },
-  },
   typescript: {
     shim: false,
     strict: true,
@@ -20,7 +13,6 @@ export default defineNuxtConfig({
         config.plugins?.push(vuetify({ autoImport: true }))
       })
     },
-    '@sidebase/nuxt-auth',
   ],
   build: {
     transpile: ['vuetify'],
