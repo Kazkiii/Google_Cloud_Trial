@@ -22,6 +22,18 @@ services:
       - 5432:5432
     volumes:
       - postgres:/var/lib/postgresql
+  firebase:
+    build:
+      context: .
+      dockerfile: Dockerfile.firebase
+    ports:
+      - 4000:4000
+      - 9099:9099
+    volumes:
+      - ./app:/opt/workspace
+    working_dir: /opt/workspace
+    command: "firebase emulators:start --import=./firebase/data --export-on-exit"
+    tty: true
 volumes:
   postgres:
   node_modules:

@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.3.67",
-    "@prisma/client": "^5.4.2"
+    "@prisma/client": "^5.4.2",
+    "firebase": "^10.5.0"
   }
 }
