@@ -1,29 +1,18 @@
 import { NuxtAuthHandler } from '#auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import prisma from 'prisma/client'
+import GoogleProvider from 'next-auth/providers/google'
+import prisma from '~/prisma/client'
+
+const config = useRuntimeConfig()
 
 export default NuxtAuthHandler({
-  secret: process.env.AUTH_SECRET,
+  secret: config.AUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'tarou@example.com' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials, req) {
-        const user = await prisma.user.findUnique({ where: { email: credentials?.email } })
-        if (user) {
-          console.log(credentials)
-          console.log(req)
-          return user
-        } else {
-          console.error('Warning: Malicious login attempt registered, bad credentials provided')
-          return null
-        }
-      },
+    // @ts-expect-error: 'default' does not exist on type, but needs 'default'
+    GoogleProvider.default({
+      clientId: config.GOOGLE_CLIENT_ID,
+      clientSecret: config.GOOGLE_CLIENT_SECRET,
     }),
-  ]
+  ],
 })

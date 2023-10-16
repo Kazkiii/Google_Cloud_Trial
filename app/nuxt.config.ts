@@ -3,7 +3,11 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   auth: {
-    globalAppMiddleware: true,
+    globalAppMiddleware: {
+      isEnabled: true,
+      allow404WithoutAuth: true,
+      addDefaultCallbackUrl: true,
+    },
   },
   typescript: {
     shim: false,
@@ -13,11 +17,10 @@ export default defineNuxtConfig({
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
+        config.plugins?.push(vuetify({ autoImport: true }))
       })
     },
-    '@sidebase/nuxt-auth'
+    '@sidebase/nuxt-auth',
   ],
   build: {
     transpile: ['vuetify'],
@@ -28,5 +31,10 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+  },
+  runtimeConfig: {
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
 })
