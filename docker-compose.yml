@@ -8,6 +8,7 @@ services:
     working_dir: "/app"
     ports:
       - "3000:3000"
+    command: sh -c "yarn dev"
     tty: true
     environment:
       - HOST=0.0.0.0
@@ -29,10 +30,12 @@ services:
     ports:
       - 4000:4000
       - 9099:9099
+      - 4400:4400
+      - 4500:4500
     volumes:
-      - ./app:/opt/workspace
-    working_dir: /opt/workspace
-    command: "firebase emulators:start --import=./firebase/data --export-on-exit"
+      - ./firebase.json:/opt/firebase/firebase.json
+    working_dir: /opt/firebase
+    command: firebase emulators:start --project ${FIREBASE_PROJECT_ID}
     tty: true
 volumes:
   postgres:
