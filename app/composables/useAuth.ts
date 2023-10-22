@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth'
 
 export const useAuth = (auth: Auth = getAuth()) => {
-  const user = ref<User | null>(auth.currentUser)
+  const user = ref<User | null | undefined>(auth.currentUser)
   const isAuthed = computed(() => !!user.value)
   auth.onIdTokenChanged((authUser) => (user.value = authUser))
 
